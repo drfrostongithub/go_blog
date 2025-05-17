@@ -5,6 +5,7 @@ import (
 
 	"hello-go/database"
 	"hello-go/models"
+	"hello-go/routes"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +25,8 @@ func main() {
 			"message": "se",
 		})
 	})
+
+	routes.SetupRoutes(r)
 
 	database.DB.AutoMigrate(
 		&models.Portfolio{},

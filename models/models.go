@@ -43,3 +43,12 @@ type SocialMedia struct {
 	URL      string `json:"url" gorm:"not null"`
 	Icon     string `json:"icon"`
 }
+
+// User - Admin user for authentication
+type User struct {
+	gorm.Model
+	Username string `json:"username" gorm:"unique;not null"`
+	Email    string `json:"email" gorm:"unique;not null"`
+	Password string `json:"-" gorm:"not null"`
+	IsAdmin  bool   `json:"is_admin" gorm:"default:false"`
+}
