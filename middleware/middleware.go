@@ -1,8 +1,8 @@
 package middleware
 
 import (
+	"hello-go/utils"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -25,7 +25,7 @@ func GenerateToken(username string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Get the JWT secret key from environment variable or use a default (for dev only)
-	tokenString, err := token.SignedString([]byte(getEnv("JWT_SECRET_KEY", "your-256-bit-secret-key-here")))
+	tokenString, err := token.SignedString([]byte(utils.GetEnv("JWT_SECRET_KEY", "your-256-bit-secret-key-here")))
 	if err != nil {
 		return "", err
 	}
@@ -62,7 +62,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			}
 
 			// Return the secret key for validation
-			return []byte(getEnv("JWT_SECRET_KEY", "your-256-bit-secret-key-here")), nil
+			return []byte(utils.GetEnv("JWT_SECRET_KEY", "your-256-bit-secret-key-here")), nil
 		})
 
 		if err != nil || !token.Valid {
@@ -81,12 +81,4 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 	}
-}
-
-// Helper function to get environment variable
-func getEnv(key, fallback string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
-	}
-	return fallback
 }
